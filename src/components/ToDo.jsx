@@ -1,34 +1,50 @@
-import React, { useState, useRef } from "react";
-
-import * as styles from "./ToDo.module.css";
+import React, { useState } from "react";
 
 const App = () => {
-  const inputRef = useRef();
-  const [tasks, setTask] = useState([]);
+  const [todo, setTodo] = useState("");
+  const [task, setTask] = useState([]);
+
+  function handleInput(event) {
+    setTodo(event.target.value);
+  }
 
   function addTask() {
-    if (inputRef.current.value !== "") {
-      setTask([...tasks, inputRef.current.value]);
+    if (todo.trim() !== "") {
+      const newTask = {
+        id: Date.now(),
+        value: todo,
+        status: false,
+      };
+      const updateTasks = [...task, newTask];
+      setTask(updateTasks);
     }
   }
 
-  function deleteTask(task) {
-    const updateTask = tasks.filter((_, index) => index !== task);
+  function deleteTask(id) {
+    const updateTask = task.filter((item) => item.id !== id);
     setTask(updateTask);
   }
 
   return (
     <div>
-      <input type="text" defaultValue="Enter Task" ref={inputRef} />
-      <button onClick={addTask}>Add Task</button>
-      <ol>
-        {tasks.map((item, index) => (
-          <li key={index}>
-            <p>{item}</p>
-            <button onClick={() => deleteTask(index)}>Delete</button>
-          </li>
-        ))}
-      </ol>
+      <input
+        type="text"
+        value={todo}
+        placeholder="Add task..."
+        onChange={handleInput}
+      />
+      <button onClick={addTask}>Add</button>
+      <div>
+        <ol>
+          {task.map((item) => (
+            <li key={item.id}>
+              <p>{item.value}</p>
+
+              <button onClick={() => deleteTask(item.id)}>DeleteTask</button>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   );
 };
