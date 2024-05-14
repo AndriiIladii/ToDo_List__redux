@@ -26,6 +26,7 @@ const App = () => {
       };
       const updateTasks = [...task, newTask];
       setTask(updateTasks);
+      setTodo("");
     }
   }
 
@@ -53,6 +54,7 @@ const App = () => {
   function cancelEditing() {
     setEdit(false);
     setTodo("");
+    setCurrentTodoIndex(null);
   }
 
   return (
@@ -64,22 +66,22 @@ const App = () => {
         onChange={handleInput}
       />
       <button onClick={addTask}>Add</button>
-      {edit && (
-        <>
-          <input
-            type="text"
-            value={todoEdit}
-            placeholder="Save task..."
-            onChange={handleEdit}
-          />
-          <button onClick={updateTodo}>Save new</button>
-          <button onClick={cancelEditing}>Cancel</button>
-        </>
-      )}
       <div>
         <ol>
           {task.map((item) => (
             <li key={item.id}>
+              {edit && (
+                <>
+                  <input
+                    type="text"
+                    value={todoEdit}
+                    placeholder="Edit task..."
+                    onChange={handleEdit}
+                  />
+                  <button onClick={updateTodo}>Save new</button>
+                  <button onClick={cancelEditing}>Cancel</button>
+                </>
+              )}
               <p>{item.value}</p>
 
               <button onClick={() => deleteTask(item.id)}>Delete Task</button>
