@@ -3,10 +3,9 @@ import React, { useState } from "react";
 const App = () => {
   const [todo, setTodo] = useState("");
   const [todoEdit, setTodoEdit] = useState("");
-  const [checkbox, setCheckbox] = useState("");
   const [task, setTask] = useState([]);
   const [edit, setEdit] = useState(false);
-  const [currentTodoIndex, setCurrentTodoIndex] = useState(null);
+  const [editedId, setEditedId] = useState(null);
 
   function handleInput(event) {
     setTodo(event.target.value);
@@ -39,24 +38,25 @@ const App = () => {
   function editTask(todoItem) {
     setEdit(true);
     setTodoEdit(todoItem.value);
-    setCurrentTodoIndex(todoItem.id);
+    setEditedId(todoItem.id);
   }
 
   function updateTodo() {
     let updatedTodos = task.map((item) => {
-      if (item.id === currentTodoIndex) {
+      if (item.id === editedId) {
         item.value = todoEdit;
       }
       return item;
     });
     setTask([...updatedTodos]);
+    setEditedId(null);
     setEdit(false);
   }
 
   function cancelEditing() {
     setEdit(false);
     setTodoEdit("");
-    setCurrentTodoIndex(null);
+    setEditedId(null);
   }
 
   return (
@@ -72,7 +72,7 @@ const App = () => {
         <ol>
           {task.map((item) => (
             <li key={item.id}>
-              {edit && currentTodoIndex === item.id ? (
+              {editedId !== null ? (
                 <>
                   <input
                     type="text"
@@ -86,7 +86,7 @@ const App = () => {
               ) : (
                 <>
                   <p>{item.value}</p>
-                  <input type="checkbox" onChange={handleCheckbox} />
+
                   <button onClick={() => deleteTask(item.id)}>
                     Delete Task
                   </button>
