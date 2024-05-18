@@ -98,7 +98,7 @@ const App = () => {
                 </>
               ) : (
                 <>
-                  <p className={item.completed ? styles.completed : ""}>
+                  <p className={item.completed ? styles.completed : "none"}>
                     {item.value}
                   </p>
                   <input
