@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import * as styles from "./ToDo.module.css";
 
@@ -9,6 +9,10 @@ const App = () => {
     JSON.parse(localStorage.getItem("newTask")) || []
   );
   const [editedId, setEditedId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("newTask", JSON.stringify(task));
+  }, [task]);
 
   function handleInput(event) {
     setTodo(event.target.value);
@@ -43,7 +47,6 @@ const App = () => {
     const updateTasks = [...task, newTask];
     setTask(updateTasks);
     setTodo("");
-    localStorage.setItem("newTask", JSON.stringify(updateTasks));
   }
 
   function deleteTask(id) {
@@ -65,7 +68,7 @@ const App = () => {
       }
       return item;
     });
-    setTask([...updatedTodos]);
+    setTask(updatedTodos);
     setEditedId(null);
     setTodoEdit("");
   }
@@ -88,7 +91,7 @@ const App = () => {
         <ol>
           {task.map((item) => (
             <li key={item.id}>
-              {editedId !== null ? (
+              {editedId === item.id ? (
                 <>
                   <input
                     type="text"
@@ -106,8 +109,8 @@ const App = () => {
                   </p>
                   <input
                     type="checkbox"
-                    defaultChecked={item.completed}
-                    onClick={() => handleCheckbox(item.id)}
+                    checked={item.completed}
+                    onChange={() => handleCheckbox(item.id)}
                   />
                   <button onClick={() => deleteTask(item.id)}>
                     Delete Task
