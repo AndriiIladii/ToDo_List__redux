@@ -5,7 +5,9 @@ import * as styles from "./ToDo.module.css";
 const App = () => {
   const [todo, setTodo] = useState("");
   const [todoEdit, setTodoEdit] = useState("");
-  const [task, setTask] = useState([]);
+  const [task, setTask] = useState(
+    JSON.parse(localStorage.getItem("newTask")) || []
+  );
   const [editedId, setEditedId] = useState(null);
 
   function handleInput(event) {
@@ -41,6 +43,7 @@ const App = () => {
     const updateTasks = [...task, newTask];
     setTask(updateTasks);
     setTodo("");
+    localStorage.setItem("newTask", JSON.stringify(updateTasks));
   }
 
   function deleteTask(id) {
