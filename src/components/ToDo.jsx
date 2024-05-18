@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
+import * as styles from "./ToDo.module.css";
+
 const App = () => {
   const [todo, setTodo] = useState("");
   const [todoEdit, setTodoEdit] = useState("");
   const [task, setTask] = useState([]);
-  const [edit, setEdit] = useState(false);
   const [editedId, setEditedId] = useState(null);
 
   function handleInput(event) {
@@ -15,19 +16,31 @@ const App = () => {
     setTodoEdit(event.target.value);
   }
 
-  function addTask() {
-    if (todo === "") {
+  function handleCheckbox(id) {
+    let toggle = task.map((item) =>
+      item.id === id ? { ...item, completed: !item.completed } : item
+    );
+    setTask(toggle);
+  }
+
+  function validateInput(input) {
+    if (input === "") {
       alert("You must Enter Your task");
-    } else {
-      const newTask = {
-        id: Date.now(),
-        value: todo,
-        completed: false,
-      };
-      const updateTasks = [...task, newTask];
-      setTask(updateTasks);
-      setTodo("");
+      return false;
     }
+    return true;
+  }
+
+  function addTask() {
+    if (!validateInput(todo)) return;
+    const newTask = {
+      id: Date.now(),
+      value: todo,
+      completed: false,
+    };
+    const updateTasks = [...task, newTask];
+    setTask(updateTasks);
+    setTodo("");
   }
 
   function deleteTask(id) {
@@ -36,12 +49,13 @@ const App = () => {
   }
 
   function editTask(todoItem) {
-    setEdit(true);
     setTodoEdit(todoItem.value);
     setEditedId(todoItem.id);
   }
 
   function updateTodo() {
+    if (!validateInput(todoEdit)) return;
+
     let updatedTodos = task.map((item) => {
       if (item.id === editedId) {
         item.value = todoEdit;
@@ -50,11 +64,10 @@ const App = () => {
     });
     setTask([...updatedTodos]);
     setEditedId(null);
-    setEdit(false);
+    setTodoEdit("");
   }
 
   function cancelEditing() {
-    setEdit(false);
     setTodoEdit("");
     setEditedId(null);
   }
@@ -85,8 +98,14 @@ const App = () => {
                 </>
               ) : (
                 <>
-                  <p>{item.value}</p>
-
+                  <p className={item.completed ? styles.completed : ""}>
+                    {item.value}
+                  </p>
+                  <input
+                    type="checkbox"
+                    defaultChecked={item.completed}
+                    onClick={() => handleCheckbox(item.id)}
+                  />
                   <button onClick={() => deleteTask(item.id)}>
                     Delete Task
                   </button>
