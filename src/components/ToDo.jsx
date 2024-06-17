@@ -8,6 +8,7 @@ const App = () => {
   const [task, setTask] = useState(
     JSON.parse(localStorage.getItem("newTask")) || []
   );
+  const [editedId, setEditedId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("newTask", JSON.stringify(task));
