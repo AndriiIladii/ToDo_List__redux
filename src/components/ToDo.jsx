@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, toggleTodo, removeTodo } from "../store/actions";
 import * as styles from "./ToDo.module.css";
 
 const App = () => {
