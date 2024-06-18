@@ -15,6 +15,9 @@ const App = () => {
     localStorage.setItem("newTask", JSON.stringify(task));
   }, [task]);
 
+  const todos = useSelector((state) => state.todos.todos);
+  const dispatch = useDispatch();
+
   function handleInput(event) {
     setTodo(event.target.value);
   }
@@ -40,13 +43,13 @@ const App = () => {
 
   function addTask() {
     if (!validateInput(todo)) return;
-    const newTask = {
-      id: Date.now(),
-      value: todo,
-      completed: false,
-    };
-    const updateTasks = [...task, newTask];
-    setTask(updateTasks);
+    dispatch(
+      addTodo({
+        id: Date.now(),
+        value: todo,
+        completed: false,
+      })
+    );
     setTodo("");
   }
 
