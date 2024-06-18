@@ -1,32 +1,39 @@
 const initialState = {
-  todos: JSON.parse(localStorage.getItem("newTask")) || [],
+  todos: JSON.parse(localStorage.getItem("todos")) || [],
 };
 
 const todosReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_TODO": {
-      const newState = state.todos.concat(action.payload);
       return {
-        todos: newState,
+        todos: state.todos.concat(action.payload),
       };
     }
 
-    // case "TOGGLE_TODO": {
-    //   const { index } = action.payload;
-    //   const newState = state.map((todo, i) => {
-    //     if (i !== index) return todo;
-    //     return {
-    //       ...todo,
-    //       completed: !todo.completed,
-    //     };
-    //   });
+    case "TOGGLE_TODO": {
+      return {
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload.id
+            ? { ...todo, completed: !todo.completed }
+            : todo
+        ),
+      };
+    }
 
-    //   return newState;
-    // }
-    // case "REMOVE_TODO": {
-    //   const newState = state.filter((todo, i) => i !== action.payload.index);
-    //   return newState;
-    // }
+    case "REMOVE_TODO": {
+      return {
+        todos: state.todos.filter((todo) => todo.id !== action.payload.id),
+      };
+    }
+
+    case "UPDATE_TODOS":
+      return {
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload.id
+            ? { ...todo, value: action.payload.value }
+            : todo
+        ),
+      };
     default:
       return state;
   }

@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, toggleTodo, removeTodo } from "../store/actions";
+import { addTodo, toggleTodo, removeTodo, updateTodos } from "../store/actions";
 import * as styles from "./ToDo.module.css";
 
 const App = () => {
   const [todo, setTodo] = useState("");
   const [todoEdit, setTodoEdit] = useState("");
-  const [task, setTask] = useState(
-    JSON.parse(localStorage.getItem("newTask")) || []
-  );
   const [editedId, setEditedId] = useState(null);
 
-  useEffect(() => {
-    localStorage.setItem("newTask", JSON.stringify(task));
-  }, [task]);
-
-  const todos = useSelector((state) => state.todos.todos);
+  const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
   function handleInput(event) {
@@ -24,13 +17,6 @@ const App = () => {
 
   function handleEdit(event) {
     setTodoEdit(event.target.value);
-  }
-
-  function handleCheckbox(id) {
-    let toggle = task.map((item) =>
-      item.id === id ? { ...item, completed: !item.completed } : item
-    );
-    setTask(toggle);
   }
 
   function validateInput(input) {
@@ -54,8 +40,19 @@ const App = () => {
   }
 
   function deleteTask(id) {
-    const updateTask = task.filter((item) => item.id !== id);
-    setTask(updateTask);
+    dispatch(
+      removeTodo({
+        id,
+      })
+    );
+  }
+
+  function handleCheckbox(id) {
+    dispatch(
+      toggleTodo({
+        id,
+      })
+    );
   }
 
   function editTask(todoItem) {
@@ -65,14 +62,12 @@ const App = () => {
 
   function updateTodo() {
     if (!validateInput(todoEdit)) return;
-
-    let updatedTodos = task.map((item) => {
-      if (item.id === editedId) {
-        item.value = todoEdit;
-      }
-      return item;
-    });
-    setTask(updatedTodos);
+    dispatch(
+      updateTodos({
+        id: editedId,
+        value: todoEdit,
+      })
+    );
     setEditedId(null);
     setTodoEdit("");
   }
@@ -93,7 +88,7 @@ const App = () => {
       <button onClick={addTask}>Add</button>
       <div>
         <ol>
-          {task.map((item) => (
+          {todos.map((item) => (
             <li key={item.id}>
               {editedId === item.id ? (
                 <>
