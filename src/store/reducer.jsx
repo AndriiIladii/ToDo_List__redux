@@ -26,7 +26,7 @@ const todosReducer = (state = initialState, action) => {
       };
     }
 
-    case "UPDATE_TODOS":
+    case "UPDATE_TODO":
       return {
         todos: state.todos.map((todo) =>
           todo.id === action.payload.id

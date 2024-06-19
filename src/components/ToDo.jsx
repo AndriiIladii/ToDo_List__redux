@@ -62,12 +62,7 @@ const App = () => {
 
   function updateTodo() {
     if (!validateInput(todoEdit)) return;
-    dispatch(
-      updateTodos({
-        id: editedId,
-        value: todoEdit,
-      })
-    );
+    dispatch(updateTodos(editedId, todoEdit));
     setEditedId(null);
     setTodoEdit("");
   }
