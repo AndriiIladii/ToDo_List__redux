@@ -18,6 +18,7 @@ export const updateTodos = (id, value) => ({
   payload: { id, value },
 });
 
-export const saveToLocalStorage = () => ({
-  type: "SAVE_TO_LOCAL_STORAGE",
+export const saveToLocalStorage = (todos) => ({
+  type: "SAVE_TODOS",
+  payload: todos,
 });

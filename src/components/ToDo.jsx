@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, toggleTodo, removeTodo, updateTodos } from "../store/actions";
+import {
+  addTodo,
+  toggleTodo,
+  removeTodo,
+  updateTodos,
+  saveToLocalStorage,
+} from "../store/actions";
 import * as styles from "./ToDo.module.css";
 
 const App = () => {
@@ -10,6 +16,10 @@ const App = () => {
 
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(saveToLocalStorage(todos));
+  }, [todos]);
 
   function handleInput(event) {
     setTodo(event.target.value);
