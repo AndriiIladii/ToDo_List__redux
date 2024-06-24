@@ -6,6 +6,7 @@ import {
   removeTodo,
   updateTodos,
   saveToLocalStorage,
+  loadTodos,
 } from "../store/actions";
 import * as styles from "./ToDo.module.css";
 
@@ -18,7 +19,16 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(saveToLocalStorage(todos));
+    dispatch(loadTodos(todos));
+
+    const handleBeforeUnload = () => {
+      dispatch(saveToLocalStorage(todos));
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, [todos]);
 
   function handleInput(event) {

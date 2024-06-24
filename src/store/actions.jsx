@@ -22,3 +22,8 @@ export const saveToLocalStorage = (todos) => ({
   type: "SAVE_TODOS",
   payload: todos,
 });
+
+export const loadTodos = (todos) => ({
+  type: "LOAD_TODOS",
+  payload: todos,
+});

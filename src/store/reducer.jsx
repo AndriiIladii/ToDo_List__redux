@@ -39,6 +39,10 @@ const todosReducer = (state = initialState, action) => {
       localStorage.setItem("todos", JSON.stringify(action.payload));
     }
 
+    case "LOAD_TODOS": {
+      JSON.parse(localStorage.getItem("todos"));
+    }
+
     default:
       return state;
   }
