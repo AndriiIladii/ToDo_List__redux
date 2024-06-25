@@ -29,7 +29,7 @@ const App = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [todos]);
+  }, []);
 
   function handleInput(event) {
     setTodo(event.target.value);

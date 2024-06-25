@@ -36,11 +36,13 @@ const todosReducer = (state = initialState, action) => {
       };
 
     case "SAVE_TODOS": {
-      localStorage.getItem("todos", JSON.stringify(action.payload));
+      localStorage.setItem("todos", JSON.stringify(state.todos));
     }
 
     case "LOAD_TODOS": {
-      localStorage.setItem("todos", JSON.stringify(action.payload));
+      return {
+        todos: JSON.parse(localStorage.getItem("todos")) || [],
+      };
     }
 
     default:
