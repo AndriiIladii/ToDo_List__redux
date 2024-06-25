@@ -1,5 +1,5 @@
 const initialState = {
-  todos: JSON.parse(localStorage.getItem("todos")) || [],
+  todos: [],
 };
 
 const todosReducer = (state = initialState, action) => {
@@ -36,11 +36,11 @@ const todosReducer = (state = initialState, action) => {
       };
 
     case "SAVE_TODOS": {
-      localStorage.setItem("todos", JSON.stringify(action.payload));
+      localStorage.getItem("todos", JSON.stringify(action.payload));
     }
 
     case "LOAD_TODOS": {
-      JSON.parse(localStorage.getItem("todos"));
+      localStorage.setItem("todos", JSON.stringify(action.payload));
     }
 
     default:
